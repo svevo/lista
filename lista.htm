@@ -1,0 +1,132 @@
+<html>
+
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+    <script src="./list.js"></script>
+    <style>
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+    <div id="team-list">
+
+        <div>
+            <form id="searchForm">
+                <input class="search" value="" autofocus/>
+            </form>
+        </div>
+
+
+
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="border-bottom: 1px solid; bold">Elenco Completo</th>
+                        <th style="border-bottom: 1px solid;">Elementi Selezionati</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td style="vertical-align: top;">
+                        <div style="position: relative;" class="list-box">
+                            <ul class="list">
+
+                            </ul>
+                        </div>
+                    </td>
+                    <td style="vertical-align: top;">
+                        <div style="position: relative;" id="sel-team-list">
+                            <ul class="list"></ul>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div><button id="reset" >Reset</button></div>
+    </div>
+    <script>
+        var options = {
+            valueNames: ['team'],
+            item: '<li><a href="#" class="sel-team-btn"><h3 class="team"></h3></a></li>'
+
+        };
+
+        var selOptions = {
+            valueNames: ['team'],
+            item: '<li><h3 class="team"></h3></li>'
+        };
+
+        var teams = [{
+            team: 'Anna'
+        }, {
+            team: 'Bartolo'
+        }, {
+            team: 'Carlo'
+        }, {
+            team: 'Diana'
+        }, {
+            team: 'Enzo'
+        }, {
+            team: 'Franca'
+        }, {
+            team: 'Giorgio'
+        }, {
+            team: 'Irene'
+        }];
+
+        var selTeams = [];
+
+        var teamList = new List('team-list', options, teams);
+        var selTeamList = new List('sel-team-list', selOptions, selTeams);
+
+        var selLink = $('.sel-team-btn'),
+            searchForm = $('#searchForm'),
+            listBox = $('.list-box'),
+            searchInput = $('.search'),
+            rstBtn = $('#reset'),
+            teamName = "";
+
+        selLink.click(function() {
+            var item = $(this).closest('li').find('.team').text();
+            //alert(item);
+            //var itemValues = teamList.get('team', item)[0].values();
+            //selTeamList.add({selTeam: itemValues.team});
+            selectTeam(item);
+            return false;
+        });
+
+        searchForm.submit(function() {
+            //var item = $(this).closest('li').find('.team').text();
+            //var item = $('.list-box').closest('h3').find('.team').text();
+            var itemValues = teamList.matchingItems[0].values();
+            //alert(item);
+            //selTeamList.add({selTeam: itemValues.team});
+            selectTeam(itemValues.team);
+            searchInput.select();
+            return false;
+        });
+
+        rstBtn.click(function() {
+            searchInput.val('');
+            selTeamList.clear();
+            teamList.search('', name);
+        })
+
+
+        function selectTeam(name) {
+            selTeamList.add({
+                team: name
+            });
+        }
+    </script>
+</body>
+
+</html>
